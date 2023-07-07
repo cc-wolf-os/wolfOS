@@ -1,0 +1,17 @@
+.vscode/*
+config/*
+screenshots/*
+*.py
+computer/0/*
+computer/1/*
+computer/2/*
+computer/3/*
+computer/4/*
+computer/5/*
+computer/7/*
+computer/8/*
+computer/6/wolfos/logs/*
+computer/6/basaltLog.txt
+computer/6/wolfos/FS
+computer/6/wolfos/registry
+computer/6/wolfos/programList
