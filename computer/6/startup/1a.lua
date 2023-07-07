@@ -239,6 +239,9 @@ end
 shield(function()
         logoP()
         sleep(2)
+        for key, value in pairs(services) do
+            value()
+        end
         logger.close()
         serviceLogger.close()
         --os.reboot()

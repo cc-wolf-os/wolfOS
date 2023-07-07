@@ -45,6 +45,9 @@ local pwrBtn = sidebar
         :setSize(1,1)
         :setPosition(1, th-2)
         :setForeground(colors.red)
+        :onClick(function(self)
+            error("quit",0)
+        end)
 
 local function customProgram()
     shell.run("/wolfos/programs/programList/list.lua")
