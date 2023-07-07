@@ -11,7 +11,7 @@ function progd.load(cat)
         cat = cat
     }
     function PDBW:addProgram(pname,path,icon,args)
-        
+        self.db:setValue(cat,pname,{path=path,type="program",args=args,icon=icon}):save()
     end
 
 
