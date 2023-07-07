@@ -12,6 +12,13 @@ end
 local log4l = require("/wolfos.libs.log4l")
 local logger = log4l.new("/wolfos/logs/install", 0 --[[Time shift (here, +2 utc)]], term.current())
 logger.info("wolfos log4l install complete")
+if not fs.exists("/wolfos/libs/otp.lua") then
+        logger.info("installing otp")
+        shell.run("wget https://raw.githubusercontent.com/badgeminer2dev/cc-lock/main/cc-lock/otp.lua /wolfos/libs/otp.lua")
+        logger.info("installing otp complete")
+end
+
+
 
 
 -- Registry/ DB setup
@@ -31,6 +38,7 @@ local progs = propane.new("/wolfos/programList")
         :setValue("system","ReggEdit",{path="/wolfos/programs/reg.lua",type="program",args="",icon="\xA7"})
         :setValue("system","launchpad",{type="SYSINTERNL",args="",icon="\x93"})
         :setValue("system","shell",{path="shell",type="program",args="",icon="\x99"})
+        :newTable("custom")
         :newTable("craftOS")
         :save()
 
@@ -44,8 +52,22 @@ end
 
 progs:save()
 
-logger.info("making filesystem perms db")
-local FS = propane.new("/wolfos/FS")
+
+local sha1 = require("/wolfos.libs.otp")("sha1")
+local util = require("/wolfos.libs.otp")("util")
+logger.info("making perms db")
+
+local adminpsw = ""
+local adminPswConf = "e"
+while adminpsw ~= adminPswConf do
+        print("please enter a admin pasword,")
+        print("you CAN NOT change this later")
+        adminpsw = read("*") 
+        print("and confirm")
+        adminPswConf = read("*") 
+end
+
+local prms = propane.new("/wolfos/perms")
         :newTable("files")
         :setValue('files',"/wolfos/programList",{permFlag=12})
         :setValue('files',"/wolfos/registry",{permFlag=12})
@@ -55,7 +77,13 @@ local FS = propane.new("/wolfos/FS")
         :setValue('folders',"/wolfos/programs",{permFlag=12})
         :setValue('folders',"/wolfos/assets",{permFlag=10})
         :setValue('folders',"/wolfos/services",{permFlag=8})
+        :newTable("users")
+        :setValue("users","admin",{permFlag=7,psw=sha1.sha1(adminpsw)})
+        :setValue("users","system",{permFlag=15,psw=sha1.sha1("wolfos_system_perms15")})
         :save()
+
+
+
 
 
 logger.close()

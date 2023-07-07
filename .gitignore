@@ -12,6 +12,10 @@ computer/7/*
 computer/8/*
 computer/6/wolfos/logs/*
 computer/6/basaltLog.txt
-computer/6/wolfos/FS
+computer/6/wolfos/perms
 computer/6/wolfos/registry
 computer/6/wolfos/programList
+computer/6/wolfos/libs/basalt.lua
+computer/6/wolfos/libs/log4l.lua
+computer/6/wolfos/libs/xml.lua
+computer/6/wolfos/libs/archive.lua

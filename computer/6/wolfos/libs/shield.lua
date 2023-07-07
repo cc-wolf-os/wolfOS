@@ -37,5 +37,23 @@ local function shield(func, ...)
  
     return table.unpack(pars, 2)
 end
+local function tst(func, ...)
+    expect(1, func, "function")
  
-return shield
+    local thread = coroutine.create(func)
+    
+    local event, filter, pars = table.pack(...)
+    while coroutine.status(thread) ~= "dead" do
+        if event[1] ~= "terminate" and filter == nil or filter == event[1] then
+            pars = table.pack(coroutine.resume(thread, table.unpack(event, 1, event.n)))
+
+            error(pars[2], 0)
+
+        end
+        event = table.pack(coroutine.yield())
+    end
+ 
+    return table.unpack(pars, 2)
+end
+ 
+return {shield=shield,tst=tst}

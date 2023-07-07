@@ -117,4 +117,5 @@ WM:new("shell",progs:getValue("system","shell"))
 WM:new("ReggEdit",progs:getValue("system","ReggEdit"))
 WM_Tread:start(WM_Task)
 menubar:selectItem(1)
+
 basalt.autoUpdate()

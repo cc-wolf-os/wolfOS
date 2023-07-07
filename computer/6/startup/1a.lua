@@ -12,6 +12,7 @@ local registry = propane.load("/wolfos/registry")
 local log4l = require("/wolfos.libs.log4l")
 local window_manager = {}
 local windowman = {}
+local services = {}
 
 
 
@@ -101,20 +102,18 @@ local tasks = {
             --colorI.info("#"..tostring(string.sub(string.format("%x", code),1,-1)).."  "..color)
         end
         --colorI.close()
-    end,
-    function() 
-        
-        for c=1,16,1 do
-            
-            debugWindow.blit(string.format("%x",c-1),string.format("%x",c-1),"f")
-            
-            sleep(0.01)
-        end
-        for c=1,16,1 do
-            debugWindow.blit(string.format("%x",c-1),string.format("%x",c-1),string.format("%x",c-1))
-            sleep(0.01)
-        end
         logger.info("loading pallete... \x2F")
+    end,
+    function()
+        logger.info("starting services...")
+        local serv = {
+            "permSystem",
+            "fileSystem"
+        }
+        for index, value in ipairs(serv) do
+            logger.info("starting service "..value.."...")
+            services[value] = require("/wolfos.services."..value)(serviceLogger)
+        end
     end
 }
 
@@ -200,9 +199,9 @@ debugWindow.setVisible(false)
 term.clear()
 term.setCursorPos(1, 1)
 
-package.path = package.path..";/wolfos/libs/?"
-
-shell.run("test.lua")
+local shld = require("/wolfos.libs.shield")
+local shield = shld.shield
+local ok,err = pcall(function()shell.run("test.lua")end)
 local function logoF()
     --local image = assert(nft.load("/wolfos/assets/wolf.nft"))
     local image = assert(nft.parse(require("/wolfos.assets.specs").logoF))
@@ -219,21 +218,24 @@ local function logoP()
     nft.draw(image, (tw/2)-5,(th/2)-4)
     term.setCursorPos(cx,cy)
 end
-local shield = require("/wolfos.libs.shield")
-shield(function()
-        term.clear()
-        term.setCursorPos(1, 1)
-        debugWindow.reposition(1,1,30,30)
-        --debugWindow.clear()
-        debugWindow.setVisible(true)
-        logger.info("oh, snap")
-        logger.fatal("wolf os has crashed")
-        logoF()
+
+if not ok then
+    shield(function()
+            term.clear()
+            term.setCursorPos(1, 1)
+            debugWindow.reposition(1,1,30,30)
+            --debugWindow.clear()
+            debugWindow.setVisible(true)
+            logger.info("oh, snap")
+            logger.fatal("wolf os has crashed")
+            logger.error(tostring(err))
+            logoF()
 
 
-        read()
-    end
-)
+            read()
+        end
+    )
+end
 shield(function()
         logoP()
         sleep(2)
