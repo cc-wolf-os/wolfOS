@@ -19,3 +19,5 @@ computer/6/wolfos/libs/basalt.lua
 computer/6/wolfos/libs/log4l.lua
 computer/6/wolfos/libs/xml.lua
 computer/6/wolfos/libs/archive.lua
+computer/6/wolfos/libs/LibDeflate.lua
+computer/6/wolfos/libs/otp.lua
