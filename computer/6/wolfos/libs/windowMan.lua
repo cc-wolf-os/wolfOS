@@ -11,6 +11,15 @@ local function MakeWM()
     }
     function wm:remove(id)
         expect.expect(1,id,"string")
+        r = self.activeWindows[id]
+        r.frame:remove()
+        for key, value in pairs(self.activeWindows) do
+            if value.index > r.index then
+                value.index = value.index-1
+            end
+        end
+        self.activeWindows[id] =nil
+        return r
     end
     function wm:ready(id,window,idx)
         table.remove(self.WindowsWaitingForAdding,idx)

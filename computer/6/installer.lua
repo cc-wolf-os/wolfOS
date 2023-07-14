@@ -20,6 +20,36 @@ end
 
 
 
+local github_api = http.get("https://api.github.com/repos/cc-wolf-os/wolfOS/git/trees/main?recursive=1")
+local list = textutils.unserialiseJSON(github_api.readAll())
+local ls = {}
+local len = 0
+github_api.close()
+for k,v in pairs(list.tree) do
+    if v.type == "blob" and v.path:lower():find("computer/6/") and #(v.path:gsub("computer/6/","")) then
+        ls["https://raw.githubusercontent.com/cc-wolf-os/wolfOS/main/"..v.path] = v.path:gsub("computer/6/","")
+        len = len + 1
+    end
+end
+local percent = 100/len
+local finished = 0
+logger.info("downloading "..tostring(len).." files")
+local dbgmode = not settings.get("wolfosDebugInstaller",false)
+for k,v in pairs(ls) do
+    local web = http.get(k)
+    if dbgmode then
+        local file = fs.open("/"..v,"w")
+        file.write(web.readAll())
+        file.close()
+    end
+    
+    web.close()
+    finished = finished + 1
+    logger.info(tostring(math.ceil(finished*percent)).."%%".."  "..tostring("downloading "..v))
+end
+
+
+
 
 -- Registry/ DB setup
 local propane = require("/wolfos.libs.propaneDB")("db")
@@ -30,6 +60,8 @@ local reg = propane.new("/wolfos/registry")
         :setValue("boot","debugInfoH",15)
         :setValue("boot","debugInfoEnabled",true)
         :setValue("boot","logo","logo")
+        :newTable("debug")
+        :setValue("debug","showWIDs",true)
         :save()
 
 logger.info("making program List")

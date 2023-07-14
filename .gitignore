@@ -10,6 +10,7 @@ computer/4/*
 computer/5/*
 computer/7/*
 computer/8/*
+computer/9/*
 computer/6/wolfos/logs/*
 computer/6/basaltLog.txt
 computer/6/wolfos/perms
@@ -21,3 +22,4 @@ computer/6/wolfos/libs/xml.lua
 computer/6/wolfos/libs/archive.lua
 computer/6/wolfos/libs/LibDeflate.lua
 computer/6/wolfos/libs/otp.lua
+computer/6/.settings

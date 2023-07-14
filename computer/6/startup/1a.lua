@@ -123,7 +123,7 @@ local tasks = {
 
 local function logo()
     --local image = assert(nft.load("/wolfos/assets/wolf.nft"))
-    local image = assert(nft.parse(require("/wolfos.assets.specs").logoT))
+    local image = assert(nft.parse(require("/wolfos.assets.specs").logo))
     local cx,cy = term.getCursorPos()
     local tw,th = term.getSize()
     nft.draw(image, (tw/2)-5,(th/2)-4)
@@ -201,7 +201,7 @@ term.setCursorPos(1, 1)
 
 local shld = require("/wolfos.libs.shield")
 local shield = shld.shield
-local ok,err = pcall(function()shell.run("test.lua")end)
+local ok,err = pcall(function()require("/test")end)
 local function logoF()
     --local image = assert(nft.load("/wolfos/assets/wolf.nft"))
     local image = assert(nft.parse(require("/wolfos.assets.specs").logoF))
