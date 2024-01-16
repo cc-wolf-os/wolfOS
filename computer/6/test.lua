@@ -149,12 +149,12 @@ local function launch_Window(W)
             
         end
     end
-    --prg:onDone(function(self)
-    --    if regdb:getValue("debug","showWIDs") then
-    --        lable:setText(tostring(W.id.." "..WID.." [Not Responding]"))
+    prg:onDone(function(self)
+        if regdb:getValue("debug","showWIDs") then
+            lable:setText(tostring(W.id.." "..WID.." [Not Responding]"))
     --        prg:execute(waitForQuit())
-    --    end
-    --end)
+        end
+    end)
     wnd:addButton()
         :setSize(1, 1)
         :setText("X")
